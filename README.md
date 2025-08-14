@@ -6,7 +6,7 @@ Elevating predictive maintenance with vibration signal analytics and machine lea
 
 ### TL;DR
 - **Goal**: Detect incipient bearing faults and estimate remaining useful life (RUL) from raw vibration signals.
-- **Data**: NASA Prognostics Data Repository / IMS (run-to-failure) bearing datasets.
+- **Data**: IMS/NASA bearing run-to-failure data pulled via the Kaggle API (slug: `vinayak123tyagi/bearing-dataset`).
 - **Approach**: Signal processing (time/frequency/wavelet features) + classical ML baselines; room for DL extensions.
 - **Artifacts**: Main analysis notebook `Predictive_maintanence.ipynb` (exploration → feature engineering → modeling → evaluation).
 
@@ -15,15 +15,46 @@ Elevating predictive maintenance with vibration signal analytics and machine lea
 ### Why this project?
 Rotating machinery health monitoring is critical in aerospace and industrial applications. Vibration signals carry rich signatures of bearing degradation. This repo demonstrates a clean, end‑to‑end workflow for turning raw accelerometer data into actionable predictions for anomaly detection, fault diagnosis, and life estimation.
 
-### Dataset
-This project uses the widely cited IMS run‑to‑failure bearing datasets, mirrored by NASA’s Prognostics Center of Excellence (PCoE). Each run logs high‑frequency accelerometer data until failure under controlled loads and speeds. From these signals, we extract multi‑domain features to track degradation.
+### Dataset (via Kaggle API)
+This project uses the IMS run‑to‑failure bearing dataset obtained from Kaggle and attributed to the NASA/IMS sources. We fetch it programmatically using the Kaggle API. The notebook leverages `kagglehub` to download and cache the dataset locally.
 
 What you typically get:
 - Multiple test runs (R2F) with different operating conditions
 - Raw time‑series vibration signals (often 20 kHz+ sampling)
 - Ground truth “failure end” timestamps for supervised labeling or survival/RUL framing
 
-If you don’t have the data locally yet, download it from the NASA PCoE Prognostics Data Repository and place it under a `data/` directory. A common layout is:
+If you don’t have the data locally yet, use one of the following options.
+
+Option A — Python (recommended in this repo):
+```python
+import kagglehub
+
+# Downloads and returns a local cache path like:
+# ~/.cache/kagglehub/datasets/vinayak123tyagi/bearing-dataset/versions/1
+path = kagglehub.dataset_download("vinayak123tyagi/bearing-dataset")
+print("Path to dataset files:", path)
+```
+
+Install if needed:
+```bash
+pip install kagglehub
+# For private datasets or rate limits, configure Kaggle credentials as below
+```
+
+Option B — Kaggle CLI:
+```bash
+pip install kaggle
+# Place kaggle.json in ~/.kaggle/kaggle.json and restrict permissions
+mkdir -p ~/.kaggle && chmod 700 ~/.kaggle
+echo '{"username":"<your_username>","key":"<your_key>"}' > ~/.kaggle/kaggle.json
+chmod 600 ~/.kaggle/kaggle.json
+
+# Download and unzip into a local data directory
+mkdir -p data/IMS
+kaggle datasets download -d vinayak123tyagi/bearing-dataset -p data/IMS --unzip
+```
+
+After downloading, you may organize as:
 
 ```
 data/
@@ -33,14 +64,17 @@ data/
     Run3/
 ```
 
-Note: The exact folder names and file formats may vary depending on the source mirror. Adjust the notebook paths accordingly.
+Note: Folder names may vary based on your chosen download method (kagglehub cache vs. manual unzip). Adjust notebook paths accordingly. The notebook currently expects the kagglehub cache path similar to:
+
+```
+~/.cache/kagglehub/datasets/vinayak123tyagi/bearing-dataset/versions/1/
+```
 
 ### Repository structure
 ```
 Pattern_Vibration_NASA_Bearing_Datasets/
   ├─ Predictive_maintanence.ipynb   # Main end‑to‑end analysis
   ├─ README.md                      # You are here
-  └─ data/                          # (optional) place datasets here (gitignored if you add .gitignore)
 ```
 
 ### Environment setup
