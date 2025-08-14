@@ -137,25 +137,6 @@ Feel free to extend with:
 ### Acknowledgments
 - IMS (University of Cincinnati) for the bearing run‑to‑failure datasets
 - NASA Prognostics Center of Excellence (PCoE) for maintaining the Prognostics Data Repository
-
-### How to cite
-If this work helps your research or product, please cite the dataset source(s) and this repository. Example BibTeX entries to adapt:
-
-```bibtex
-@misc{ims_bearing_data,
-  title        = {IMS Bearing Run-to-Failure Dataset},
-  howpublished = {Prognostics Data Repository, NASA Ames PCoE},
-  note         = {Accessed YYYY-MM-DD}
-}
-
-@software{pattern_vibration_repo,
-  author  = {Phani Koduri},
-  title   = {Pattern Vibration — NASA/IMS Bearing Datasets},
-  year    = {2025},
-  url     = {https://github.com/Phani69/Pattern_Vibration_NASA_Bearing_Datasets}
-}
-```
-
 ---
 
 Questions or ideas? Open an issue or start a discussion. Happy experimenting!
